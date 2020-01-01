@@ -1,17 +1,23 @@
 import socket
 
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-s.connect((socket.gethostname(), 8080))
+s.connect((socket.gethostname(), 8081))
 
-full_msg = ''
+HEADERSIZE = 10
 
 while True:
-    msg = s.recv(8)
+    full_msg = ''
+    new_msg = True
 
-    if len(msg) <= 0:
-        break
+    while True:
+        msg = s.recv(16)
+        if new_msg:
+            msg_length = int(msg[:HEADERSIZE])
+            new_msg = False
 
-    full_msg += msg.decode('utf-8')
+        full_msg += msg.decode('utf-8')
 
-print(full_msg)
+        if len(full_msg) - HEADERSIZE == msg_length:
+            print('Full message recieved: {}'.format(full_msg[HEADERSIZE:]))
+            full_msg = ''
 
