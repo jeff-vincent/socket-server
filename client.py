@@ -1,23 +1,30 @@
 import socket
 
-s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-s.connect((socket.gethostname(), 8081))
+class SocketClient:
 
-HEADERSIZE = 10
+    def __init__(self):
+        self.s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.HEADERSIZE = 10
 
-while True:
-    full_msg = ''
-    new_msg = True
+    def main(self):
+        self.s.connect((socket.gethostname(), 8081))
 
-    while True:
-        msg = s.recv(16)
-        if new_msg:
-            msg_length = int(msg[:HEADERSIZE])
-            new_msg = False
-
-        full_msg += msg.decode('utf-8')
-
-        if len(full_msg) - HEADERSIZE == msg_length:
-            print('Full message recieved: {}'.format(full_msg[HEADERSIZE:]))
+        while True:
             full_msg = ''
+            new_msg = True
 
+            while True:
+                msg = self.s.recv(16)
+                if new_msg:
+                    msg_length = int(msg[:self.HEADERSIZE])
+                    new_msg = False
+
+                full_msg += msg.decode('utf-8')
+
+                if len(full_msg) - self.HEADERSIZE == msg_length:
+                    print('Full message recieved: {}'.format(full_msg[self.HEADERSIZE:]))
+                    full_msg = ''
+
+if __name__ == '__main__':
+    client = SocketClient()
+    client.main()
