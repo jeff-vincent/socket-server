@@ -7,7 +7,7 @@ class SocketClient:
         self.HEADERSIZE = 10
 
     def main(self):
-        self.s.connect((socket.gethostname(), 8081))
+        self.s.connect((socket.gethostname(), 8085))
 
         while True:
             full_msg = ''
