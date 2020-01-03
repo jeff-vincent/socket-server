@@ -1,5 +1,6 @@
 import socket
 import random
+import time
 
 class SocketServer:
 
@@ -19,11 +20,12 @@ class SocketServer:
             clientsocket, address = self.s.accept()
             print('A connection to {} has been made!'.format(address))
             
-
-            self.generate_msg()
-            msg_with_header = f'{len(self.msg):<{self.HEADERSIZE}}' + self.msg
+            while True:
+                time.sleep(3)
+                self.generate_msg()
+                msg_with_header = f'{len(self.msg):<{self.HEADERSIZE}}' + self.msg
     
-            clientsocket.send(bytes(msg_with_header, 'utf-8'))
+                clientsocket.send(bytes(msg_with_header, 'utf-8'))
 
 
 

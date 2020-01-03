@@ -24,6 +24,7 @@ class SocketClient:
                 if len(full_msg) - self.HEADERSIZE == msg_length:
                     print('Full message recieved: {}'.format(full_msg[self.HEADERSIZE:]))
                     full_msg = ''
+                    new_msg = True
 
 if __name__ == '__main__':
     client = SocketClient()
